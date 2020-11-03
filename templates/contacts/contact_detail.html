@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="flex flex-wrap">
+    <div class="w-33 pa3">
+      <h2>{{ contact.name }}</h2>
+  
+      <div class="flex">
+        <div class="pr2"><i class="icofont-location-pin"></i></div>
+        <div>
+          {{ contact.address_1 }}<br />
+          {% if contact.address_2 %}
+            {{ contact.address_2 }}<br />
+          {% endif %}
+          {{ contact.city }}, {{ contact.state }} {{ contact.zip_code }}
+        </div>
+      </div>
+  
+      {% if contact.phone_number %}
+      <div class="flex">
+        <div class="pr2"><i class="icofont-phone"></i></div>
+        <div>{{ contact.phone_number }}</div>
+      </div>
+      {% endif %}
+  
+      {% if contact.email %}
+      <div class="flex">
+        <div class="pr2"><i class="icofont-ui-email"></i></div>
+        <div>{{ contact.email }}</div>
+      </div>
+      {% endif %}
+
+      {% if contact.birthday %}
+      <div class="flex">
+        <div class="pr2"><i>🎂</i></div>
+        <div>{{ contact.birthday }}</div>
+      </div>
+      {% endif %}
+
+     <br>
+      <div class="flex">
+        <div class="pr2">Notes</div>
+        <ul>
+        {% for note in contact.notes.all %}
+        <li>{{ note.text }}</li>
+        {% endfor %}
+      </div>
+      <div>
+        <form action="{% url 'add_note' contact_pk=contact.pk %}" method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div>
+            <button type="submit">Add Note</button><br/>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+{% endblock %}
